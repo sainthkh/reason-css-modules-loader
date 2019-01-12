@@ -28,24 +28,28 @@ export default function loader(...input) {
     // Step 1. Create normal callback. 
     const callback = this.async();
 
-    // Step 2. Create our callback and execute our code. 
+    // Step 2. Create our callback and execute them before css-loader
     let async = () => (err, content) => {
         if (err) {
             return callback(err);
         }
-        const filepath = this.resourcePath;
-        const { currentDir, destFilename } = pathAndFilename(filepath);
 
+        // Extract locals
+        const localsRegex = /exports\.locals = {([\s\S]*)};/
+        const localsContent = localsRegex.exec(content)[1]
+
+        // Extract class names
         const keyRegex = /"([^\\"]+)":/g;
         let classNames = [];
         let match;
 
-        while (match = keyRegex.exec(content)) {
+        while (match = keyRegex.exec(localsContent)) {
             if (classNames.indexOf(match[1]) < 0) {
                 classNames.push(match[1]);
             }
         }
 
+        // Remove invalid class names
         classNames = filterNonCamelCaseNames(classNames);
         let { validNames, keywordNames } = filterKeywords(classNames);
         if (keywordNames.length > 0) {
@@ -54,7 +58,12 @@ export default function loader(...input) {
             log(`They are removed from the module definition.`)
         }
 
+        // Create ReasonML type
         let reasonType = makeCssModuleType(validNames);
+
+        // Save the type 
+        const filepath = this.resourcePath;
+        const { currentDir, destFilename } = pathAndFilename(filepath);
 
         let destDir = finalDestDir(queryDestDir, currentDir);
         saveFileIfChanged(destDir, destFilename, reasonType);
