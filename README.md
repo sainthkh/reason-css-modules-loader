@@ -68,7 +68,6 @@ Then, you can call CSS-Module-ized styles in your ReasonReact codes:
 
 ```reason
 <div className=styles##isRead>
-    <a href="/link">The Ultimate ReasonML Guide for Beginners</a>
 </div>
 ```
 
@@ -76,9 +75,6 @@ Like original CSS Modules, you can use [re-classnames](https://github.com/minima
 
 ```reason
 <div className=Cn.make([styles##isRead, styles##blue])>
-    <a href="/link">
-        { ReasonReact.string("The Ultimate ReasonML Guide for Beginners") }
-    </a>
 </div>
 ```
 
@@ -95,7 +91,7 @@ If it is an option that [css-loader](https://github.com/webpack-contrib/css-load
 
 NOTE: Unlike the default css-loader settings, `modules` and `camelCase` are forced to `true`. And you cannot change them to `false`. 
 
-It's not a bad decision because you don't need to use this loader if you don't want to use CSS Modules with ReasonML. And camel case is the naming convention of ReasonML. 
+It's not a bad decision because you don't need to use this loader if you don't want to use CSS Modules. And camel case is the naming convention of ReasonML. 
 
 ### `destDir` option
 
