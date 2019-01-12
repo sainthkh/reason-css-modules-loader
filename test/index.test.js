@@ -71,27 +71,21 @@ type definition = Js.t({.
 })
 
 describe('finalDestDir() tests', () => {
-    test('query.destDir if set in query', () => {
-        let query = {
-            destDir: "C:\\user\\defined\\dir",
-        }
+    test('queryDestDir if set in query', () => {
+        let queryDestDir = "C:\\user\\defined\\dir"
     
-        expect(finalDestDir(query, "C:\\current\\directory")).toBe(query.destDir)
+        expect(finalDestDir(queryDestDir, "C:\\current\\directory")).toBe(query.destDir)
     })
     
     test('./src/styles if not set in query', () => {
-        let query = {
+        let queryDestDir;
     
-        }
-    
-        expect(finalDestDir(query, "C:\\current\\directory")).toBe('./src/styles')
+        expect(finalDestDir(queryDestDir, "C:\\current\\directory")).toBe('./src/styles')
     })
     
     test('currentDirectory if query.destDir is "current"', () => {
-        let query = {
-            destDir: "current",
-        }
+        let queryDestDir = "current";
     
-        expect(finalDestDir(query, "C:\\current\\directory")).toBe("C:\\current\\directory")
+        expect(finalDestDir(queryDestDir, "C:\\current\\directory")).toBe("C:\\current\\directory")
     })
 })

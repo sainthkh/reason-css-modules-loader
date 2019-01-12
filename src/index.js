@@ -6,11 +6,13 @@ const fs = require('fs-extra')
 export default function loader(...input) {
     if(this.cacheable) this.cacheable();
 
-    let query = getOptions(this.query);
+    let query = getOptions(this);
     query = Object.assign({}, query, {
         modules: true,
         camelCase: true,
     });
+    let queryDestDir = query.destDir;
+    delete query.destDir;
 
     const log = makeLogger(query.silent);
 
@@ -54,7 +56,7 @@ export default function loader(...input) {
 
         let reasonType = makeCssModuleType(validNames);
 
-        let destDir = finalDestDir(query, currentDir);
+        let destDir = finalDestDir(queryDestDir, currentDir);
         saveFileIfChanged(destDir, destFilename, reasonType);
 
         // Step 3. Call css-loader
@@ -130,11 +132,11 @@ ${validNames.map(name =>
     `.trim();
 }
 
-export function finalDestDir(query, currentDir) {
-    if(query.destDir == "current") {
+export function finalDestDir(queryDestDir, currentDir) {
+    if(queryDestDir == "current") {
         return currentDir;
-    } else if(query.destDir) {
-        return query.destDir;
+    } else if(queryDestDir) {
+        return queryDestDir;
     } else {
         return './src/styles'
     }
