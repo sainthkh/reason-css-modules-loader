@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Webpack CSS Modules loader for ReasonML",
   "main": "lib/index.js",
+  "files": [
+    "/lib"
+  ],
   "directories": {
     "test": "test"
   },
