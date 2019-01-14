@@ -1,7 +1,8 @@
 import cssLoader from 'css-loader';
 import { getOptions } from 'loader-utils';
 const path = require('path');
-const fs = require('fs-extra')
+const fs = require('fs-extra');
+const cloneDeep = require('clone-deep');
 
 export default function loader(...input) {
     if(this.cacheable) this.cacheable();
@@ -16,11 +17,7 @@ export default function loader(...input) {
 
     const log = makeLogger(query.silent);
 
-    const moduleMode = query.modules;
-    if (!moduleMode) {
-        log(`Reason CSS Modules loader: option "modules" is not active - skipping extraction.`)
-        cssLoader.call(this, ...input);
-    }
+    const givenInput = cloneDeep(input);
 
     // Our goal:
     // Call our code before css-loader is executed.
@@ -69,7 +66,7 @@ export default function loader(...input) {
         saveFileIfChanged(destDir, destFilename, reasonType);
 
         // Step 3. Call css-loader
-        callCssLoader(this, input, query, () => callback);
+        callCssLoader(this, givenInput, query, () => callback);
     }
 
     callCssLoader(this, input, query, async);
