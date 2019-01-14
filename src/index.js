@@ -2,7 +2,7 @@ import cssLoader from 'css-loader';
 import { getOptions } from 'loader-utils';
 const path = require('path');
 const fs = require('fs-extra');
-const cloneDeep = require('clone-deep');
+const _ = require('lodash');
 
 export default function loader(...input) {
     if(this.cacheable) this.cacheable();
@@ -17,7 +17,7 @@ export default function loader(...input) {
 
     const log = makeLogger(query.silent);
 
-    const givenInput = cloneDeep(input);
+    const givenInput = _.cloneDeep(input);
 
     // Our goal:
     // Call our code before css-loader is executed.
