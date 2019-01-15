@@ -30,7 +30,15 @@ export default function loader(...input) {
 
         // Extract locals
         const localsRegex = /exports\.locals = {([\s\S]*)};/
-        const localsContent = localsRegex.exec(content)[1]
+        const matchLocals = localsRegex.exec(content);
+        
+        const localsContent = ''
+        if (matchLocals) {
+            localsContent = matchLocals[1]
+        } else {
+            // If exports.locals isn't found, callback and return. 
+            return callback(null, content);
+        }
 
         // Extract class names
         const keyRegex = /"([^\\"]+)":/g;
@@ -63,7 +71,7 @@ export default function loader(...input) {
         saveFileIfChanged(destDir, destFilename, reasonType);
 
         // Step 3. Call callback
-        callback(null, content);
+        return callback(null, content);
     }
 
     callCssLoader(this, input, query, async);
