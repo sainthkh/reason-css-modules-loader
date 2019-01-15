@@ -1,6 +1,6 @@
 {
   "name": "reason-css-modules-loader",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "Webpack CSS Modules loader for ReasonML",
   "main": "lib/index.js",
   "files": [

@@ -32,7 +32,7 @@ export default function loader(...input) {
         const localsRegex = /exports\.locals = {([\s\S]*)};/
         const matchLocals = localsRegex.exec(content);
         
-        const localsContent = ''
+        let localsContent = ''
         if (matchLocals) {
             localsContent = matchLocals[1]
         } else {
