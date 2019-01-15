@@ -2,7 +2,6 @@ import cssLoader from 'css-loader';
 import { getOptions } from 'loader-utils';
 const path = require('path');
 const fs = require('fs-extra');
-const _ = require('lodash');
 
 export default function loader(...input) {
     if(this.cacheable) this.cacheable();
@@ -16,8 +15,6 @@ export default function loader(...input) {
     delete query.destDir;
 
     const log = makeLogger(query.silent);
-
-    const givenInput = _.cloneDeep(input);
 
     // Our goal:
     // Call our code before css-loader is executed.
@@ -65,8 +62,8 @@ export default function loader(...input) {
         let destDir = finalDestDir(queryDestDir, currentDir);
         saveFileIfChanged(destDir, destFilename, reasonType);
 
-        // Step 3. Call css-loader
-        callCssLoader(this, givenInput, query, () => callback);
+        // Step 3. Call callback
+        callback(null, content);
     }
 
     callCssLoader(this, input, query, async);
